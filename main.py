@@ -59,7 +59,7 @@ def plot_data(data):
 
 if __name__ == "__main__":
     while True:
-        choice = input("---- Menu ----\n11"
+        choice = input("---- Menu ----\n"
                        "1. Take a test \n2. View Progress \n3. Quit \n>> ")
         if choice == "1":
             questions = get_questions()
