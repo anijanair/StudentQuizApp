@@ -1,9 +1,12 @@
 from random import sample
 from csv import reader
 from time import sleep
+import matplotlib.pyplot as plt
+import datetime
+
 
 # Check to see if the user provides a valid question count
-def getQuestions():
+def get_questions():
     while True:
         question_count = input("How many questions do you want to answer?  ")
         try:
@@ -17,10 +20,13 @@ def getQuestions():
             print("Please enter a valid number.")
     f = open("country-capitals.csv", "r")
     terms = list(reader(f))
+    f.close()
     return sample(terms, question_count)
 
+
 # Quiz Loop
-def startQuiz(questions):
+
+def start_quiz(questions):
     num_correct = 0
     question_count = len(questions)
     for question in questions:
@@ -30,17 +36,40 @@ def startQuiz(questions):
             num_correct += 1
         else:
             print("Incorrect. The correct answer is {}".format(question[1]))
-        sleep(3)
-    print("You got {} out of {} ({}%) correct.".format(num_correct, question_count, str(num_correct/question_count*100)[:5]))
-    # TODO: record progress to file
+        sleep(2)
+    print("You got {} out of {} ({}%) correct.".format(num_correct, question_count,
+                                                       str(num_correct / question_count * 100)[:5]))
 
-# Main Loop
+# Capture the progress made in each quiz
+
+    progress = open("progress.csv", "a")
+    progress.write("{}, {}, {}, {}\n".format(num_correct, question_count, num_correct / question_count * 100,
+                                             datetime.datetime.now()))
+    progress.close()
+
+
+# Plot progress data
+
+def plot_data(data):
+    plt.plot(data)
+    plt.show()  # TODO: need to fix y-axis scale
+
+
+# Main Loop for the MENU options
+
 if __name__ == "__main__":
     while True:
-        choice = input("---- Menu ----\n1. Take a test\n2. Quit\n>> ")
+        choice = input("---- Menu ----\n11"
+                       "1. Take a test \n2. View Progress \n3. Quit \n>> ")
         if choice == "1":
-            # TODO: add option to pick test
-            questions = getQuestions()
-            startQuiz(questions)
+            questions = get_questions()
+            start_quiz(questions)
+
         elif choice == "2":
+            progress = open("progress.csv", "r")
+            trials = list(reader(progress))
+            progress.close()
+            plot_data([trial[2] for trial in trials])    # trial = [num_correct, question_count, percentage]
+
+        elif choice == "3":
             break
