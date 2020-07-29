@@ -37,10 +37,11 @@ def start_quiz(questions):
         else:
             print("Incorrect. The correct answer is {}".format(question[1]))
         sleep(2)
-    print("You got {} out of {} ({}%) correct.".format(num_correct, question_count,
+
+    print("\nYou got {} out of {} ({}%) correct.".format(num_correct, question_count,
                                                        str(num_correct / question_count * 100)[:5]))
 
-# Capture the progress made in each quiz
+    # Capture the progress made in each quiz
 
     progress = open("progress.csv", "a")
     progress.write("{}, {}, {}, {}\n".format(num_correct, question_count, num_correct / question_count * 100,
@@ -51,8 +52,9 @@ def start_quiz(questions):
 # Plot progress data
 
 def plot_data(data):
+    plt.ylim(0.0, 100.0)
     plt.plot(data)
-    plt.show()  # TODO: need to fix y-axis scale
+    plt.show()
 
 
 # Main Loop for the MENU options
@@ -69,7 +71,9 @@ if __name__ == "__main__":
             progress = open("progress.csv", "r")
             trials = list(reader(progress))
             progress.close()
-            plot_data([trial[2] for trial in trials])    # trial = [num_correct, question_count, percentage]
+            # trial = [num_correct, question_count, percentage]
+            plot_data([float(trial[2]) for trial in trials if trial != []])
+            break
 
         elif choice == "3":
             break
