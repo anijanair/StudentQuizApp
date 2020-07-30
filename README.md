@@ -14,6 +14,6 @@ Features included in the project:
 
 To run the project:
 1. Install Python 3.8
-2. Pip install matplotlib
+2. Open a terminal and run the command 'pip install matplotlib' to install the matplotlib package.
 
 I have made more than five commits while uploading this project to GitHub.
